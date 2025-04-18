@@ -1,0 +1,45 @@
+.sectionHome {
+  display: flex;
+}
+
+.tarefas {
+  height: 100vh;
+  width: 20vw;
+}
+
+.tarefas ul {
+  padding: 20px;
+  border-top: 1px solid black;
+  list-style: none;
+}
+
+.gerenciador-de-tarefas {
+  width: 100vw;
+  border-left: 1px solid black;
+}
+
+.minhas-tarefas {
+  width: 100vw;
+  background-color: antiquewhite;
+
+}
+
+.filtro {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #888;
+  border-bottom: 2px solid transparent;
+  transition: 0.3s;
+}
+
+.filtro:hover {
+  color: #000;
+}
+
+.filtro.ativo {
+  color: #000;
+  border-bottom: 2px solid #000;
+}

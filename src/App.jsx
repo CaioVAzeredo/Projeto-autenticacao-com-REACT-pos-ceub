@@ -4,7 +4,7 @@ import './App.css'
 import Login from './pages/Login'
 import Registro from "./pages/Registro";
 import Perfil from "./pages/Perfil";
-import Dashboard from "./pages/Dashboard";
+import PaginaBase from "./pages/PaginaBase";
 
 function App() {
   const [token, setToken] = useState()
@@ -19,7 +19,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/pag-base" element={<PaginaBase />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/perfil" element={<Perfil />} />
 
@@ -28,7 +28,7 @@ function App() {
               !token ? (
                 <Login setToken={setToken} />
               ) : (
-                <Navigate to="/dashboard" replace />
+                <Navigate to="/pag-base" replace />
               )
             }
 
