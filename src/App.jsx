@@ -2,9 +2,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useEffect, useState } from 'react'
 import './App.css'
 import Login from './pages/Login'
-import Home from "./pages/Home";
 import Registro from "./pages/Registro";
 import Perfil from "./pages/Perfil";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [token, setToken] = useState()
@@ -19,7 +19,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/home" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/perfil" element={<Perfil />} />
 
@@ -28,7 +28,7 @@ function App() {
               !token ? (
                 <Login setToken={setToken} />
               ) : (
-                <Navigate to="/home" replace />
+                <Navigate to="/dashboard" replace />
               )
             }
 

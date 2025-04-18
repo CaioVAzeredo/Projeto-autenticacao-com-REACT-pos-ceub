@@ -1,5 +1,5 @@
-import './Home.css'
-function Home() {
+import './Dashboard.css'
+function Dashboard() {
 
     function pagPerfil() {
         window.location.href = "/perfil"
@@ -37,4 +37,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Dashboard;

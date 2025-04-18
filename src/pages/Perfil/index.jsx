@@ -44,10 +44,10 @@ function Perfil() {
     return (
         <>
             <div onClick={btnVoltar} className='botaoVoltar'> ← voltar</div>
-            <h1>Olá</h1>
+            <h1>Olá,{/*  {usuario.name} */}</h1>
             {usuario ? (
                 <div>
-
+                   {/*  <p>Nome: {usuario.name}</p> */}
                     <p>Email: {usuario.email}</p>
                 </div>
             ) : (

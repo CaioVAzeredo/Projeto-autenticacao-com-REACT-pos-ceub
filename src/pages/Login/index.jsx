@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Formulario from "../../components/Formulario";
 import Campo from "../../components/Campo";
 import Button from "../../components/Button";
@@ -8,6 +8,7 @@ import { useState } from "react";
 function Login({ setToken }) {
     const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
+    const navigate = useNavigate();
 
     const verificarUsuario = async (credenciais) => {
         const { login, senha } = credenciais;
@@ -19,9 +20,9 @@ function Login({ setToken }) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ 
-                    email: login, 
-                    password: senha 
+                body: JSON.stringify({
+                    email: login,
+                    password: senha
                 }),
             });
             const data = await response.json();
@@ -29,7 +30,7 @@ function Login({ setToken }) {
             if (response.ok) {
                 setToken(data.token);
                 localStorage.setItem("authToken", data.token);
-                Navigate("/");
+                navigate("/")
             } else {
                 alert("Login ou senhas incorretas!!")
             }
