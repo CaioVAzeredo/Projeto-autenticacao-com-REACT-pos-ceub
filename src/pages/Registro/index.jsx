@@ -10,8 +10,9 @@ function Registro() {
     const [nome, setNome] = useState('');
 
     const criarUsuario = async (credenciais) => {
-        const { login, senha } = credenciais;
+        const { nome, login, senha } = credenciais;
 
+        console.log(`nome: ${nome}, Login: ${login}, Senha: ${senha}`);
         try {
             const response = await fetch('http://localhost:3000/api/auth/register', {
                 method: "POST",
@@ -24,21 +25,25 @@ function Registro() {
                     password: senha
                 })
             });
+
             const data = await response.json();
 
             if (response.ok) {
-                alert("Usuário criado com sucesso" + data)
+                alert("Usuário criado com sucesso!!");
                 Navigate("/");
             } else {
-                alert("Erro ao criar usuário" + data.message)
+                console.error("Erro ao criar usuário:", data);
+                alert("Erro ao criar usuário:" + data.message);
             }
         } catch (erro) {
-            alert("erro ao criar um novo usuário");
+            console.error("Erro de conexão com o servidor:", erro);
+            alert("Erro ao criar um novo usuário");
         }
     }
+
     return (
         <div>
-            <Formulario onSubmit={() => criarUsuario({ login, senha })} titulo="Página de Registro" botaoVoltar={true} url={"/"}>
+            <Formulario onSubmit={() => criarUsuario({ nome, login, senha })} titulo="Página de Registro" botaoVoltar={true} url={"/"}>
                 <p>Entre com seu email e senha para acessar sua conta</p>
                 <div>
                     <Campo
@@ -56,7 +61,6 @@ function Registro() {
                         onChange={(valor) => setNome(valor)}
                     />
                 </div>
-
                 <div>
                     <Campo
                         placeholder="Senha"

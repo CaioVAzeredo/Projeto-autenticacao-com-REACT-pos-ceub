@@ -19,7 +19,10 @@ function Login({ setToken }) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email: login, password: senha }),
+                body: JSON.stringify({ 
+                    email: login, 
+                    password: senha 
+                }),
             });
             const data = await response.json();
 

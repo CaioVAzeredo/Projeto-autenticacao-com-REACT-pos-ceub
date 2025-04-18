@@ -4,6 +4,7 @@ import './App.css'
 import Login from './pages/Login'
 import Home from "./pages/Home";
 import Registro from "./pages/Registro";
+import Perfil from "./pages/Perfil";
 
 function App() {
   const [token, setToken] = useState()
@@ -18,15 +19,16 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/Home" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/perfil" element={<Perfil />} />
 
           <Route path="/"
             element={
               !token ? (
                 <Login setToken={setToken} />
               ) : (
-                <Navigate to="/Home" replace />
+                <Navigate to="/home" replace />
               )
             }
 

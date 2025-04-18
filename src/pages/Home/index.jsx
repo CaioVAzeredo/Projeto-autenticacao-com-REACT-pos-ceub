@@ -1,16 +1,40 @@
+import './Home.css'
 function Home() {
 
-    function logout() {
-        localStorage.removeItem("authToken");
-        window.location.href = "/"
-        alert("Voce saiu")
+    function pagPerfil() {
+        window.location.href = "/perfil"
     }
+
     return (
-        <>
-            <p onClick={logout}>logout</p>
-            <h1>Navigate</h1>
-        </>
-    )
+        <section className='sectionHome'>
+            <section className="tarefas">
+                <h2>Tarefas</h2>
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Tarefas</li>
+                    <li onClick={pagPerfil}>Perfil</li>
+                </ul>
+            </section>
+            <section className="gerenciador-de-tarefas">
+
+                <h2>Gerenciador de Tarefas</h2>
+
+                <div className='minhas-tarefas'>
+                    <h1>Minhas Tarefas</h1>
+                    <select name="" id="">
+                        <option value="">Todos os estatus</option>
+                        <option value="">1</option>
+                        <option value="">1</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Todos os estatus</option>
+                        <option value="">1</option>
+                        <option value="">1</option>
+                    </select>
+                </div>
+            </section>
+        </section>
+    );
 }
 
-export default Home
+export default Home;
