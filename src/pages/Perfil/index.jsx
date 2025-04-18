@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import Header from "../../components/Header";
 
 function Perfil() {
     const [usuario, setUsuario] = useState(null);
-    
+
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
@@ -42,6 +43,7 @@ function Perfil() {
 
     return (
         <>
+            <Header titulo="Perfil" />
             <h1>Olá,{/*  {usuario.name} */}</h1>
             {usuario ? (
                 <div>

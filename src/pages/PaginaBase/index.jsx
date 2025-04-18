@@ -7,7 +7,7 @@ import DashBoard from '../Dashboard';
 function PaginaBase() {
     const [filtro, setFiltro] = useState("dashboard");
     const [pagina, setPagina] = useState("dashboard");
-
+    const [titulo, setTitulo] = useState("Dashboard");
 
     const paginas = {
         dashboard: <DashBoard />,
@@ -18,29 +18,28 @@ function PaginaBase() {
 
 
     return (
-        <section className='sectionHome'>
-            <section className="tarefas">
-                <h2>Tarefas</h2>
+        <section className='pagBase'>
+            <section className="menu-lateral">
+                <h2>{titulo}</h2>
                 <ul>
                     <li onClick={() => {
+                        setTitulo("Dashboard");
                         setFiltro("dashboard");
                         setPagina("dashboard");
-                    }} className={`filtro ${filtro === "dashboard" ? "ativo" : ""}`}>Dashboard</li>
+                    }} className={`filtro-menu-lateral ${filtro === "dashboard" ? "ativo" : ""}`}>Dashboard</li>
                     <li onClick={() => {
+                        setTitulo("Tarefas");
                         setFiltro("tarefas");
                         setPagina("tarefas");
-                    }} className={`filtro ${filtro === "tarefas" ? "ativo" : ""}`}>Tarefas</li>
+                    }} className={`filtro-menu-lateral ${filtro === "tarefas" ? "ativo" : ""}`}>Tarefas</li>
                     <li onClick={() => {
+                        setTitulo("Perfil");
                         setFiltro("perfil");
-                        setPagina("perfil")
-                    }} className={`filtro ${filtro === "perfil" ? "ativo" : ""}`}>Perfil</li>
+                        setPagina("perfil");
+                    }} className={`filtro-menu-lateral ${filtro === "perfil" ? "ativo" : ""}`}>Perfil</li>
                 </ul>
             </section>
             <div className='minhas-tarefas'>
-                <div>
-                    <h2>Gerenciador de Tarefas</h2>
-                    <div><i>icone</i> <div className='foto'></div></div>
-                </div>
                 <main>
                     {paginas[pagina]}
                 </main>

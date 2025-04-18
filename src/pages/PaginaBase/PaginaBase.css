@@ -1,16 +1,20 @@
-.sectionHome {
+.pagBase {
   display: flex;
 }
 
-.tarefas {
+.menu-lateral {
   height: 100vh;
   width: 20vw;
 }
 
-.tarefas ul {
+.menu-lateral ul {
   padding: 20px;
   border-top: 1px solid black;
   list-style: none;
+}
+
+.menu-lateral h2 {
+  padding-left: 20px;
 }
 
 .gerenciador-de-tarefas {
@@ -20,11 +24,10 @@
 
 .minhas-tarefas {
   width: 100vw;
-  background-color: antiquewhite;
-
+  border-left: 1px solid black;
 }
 
-.filtro {
+.filtro-menu-lateral {
   background: none;
   border: none;
   padding: 8px 16px;
@@ -35,11 +38,12 @@
   transition: 0.3s;
 }
 
-.filtro:hover {
+.filtro-menu-lateral:hover {
   color: #000;
 }
 
-.filtro.ativo {
+.filtro-menu-lateral.ativo {
   color: #000;
-  border-bottom: 2px solid #000;
+  background-color: #f0f0f0;
+  border-radius: 5px;
 }

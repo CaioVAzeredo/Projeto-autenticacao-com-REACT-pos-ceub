@@ -45,10 +45,12 @@
     </div>
 </section>
 </section> */}
+import Header from '../../components/Header';
 import './Tarefas.css'
 
 function Tarefas() {
     return (<>
+        <Header titulo="Tarefas" />
         <h1>
             Tarefas
         </h1>
