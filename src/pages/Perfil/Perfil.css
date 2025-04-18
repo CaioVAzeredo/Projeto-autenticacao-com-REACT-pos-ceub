@@ -1,0 +1,28 @@
+.profile {
+    margin: 0 auto;
+    width: 500px;
+}
+
+.profile h1 {
+    text-align: center;
+}
+
+.botoes {
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    margin: 0 auto;
+}
+
+button {
+    border: none;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #b1b1b1;
+}

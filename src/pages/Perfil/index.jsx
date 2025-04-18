@@ -1,9 +1,11 @@
+import './Perfil.css'
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
+import Modal from '../../components/Modal';
 
 function Perfil() {
     const [usuario, setUsuario] = useState(null);
-
+    const [modal, setModal] = useState();
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
@@ -41,19 +43,29 @@ function Perfil() {
         alert("Você saiu");
     }
 
+    function abrirModal() {
+        setModal(!modal);
+    }
+
     return (
         <>
             <Header titulo="Perfil" />
-            <h1>Olá,{/*  {usuario.name} */}</h1>
-            {usuario ? (
-                <div>
-                    {/*  <p>Nome: {usuario.name}</p> */}
-                    <p>Email: {usuario.email}</p>
+            <div className='profile'>
+                <h1>Olá, {usuario?.name}</h1>
+                {usuario ? (
+                    <div>
+                        <p>Nome: {usuario?.name}</p>
+                        <p>Email: {usuario.email}</p>
+                    </div>
+                ) : (
+                    <p>Carregando informações do usuário...</p>
+                )}
+                <div className="botoes">
+                    <button onClick={logout}>Logout</button>
+                    <button onClick={abrirModal}>Atualizar informações</button>
                 </div>
-            ) : (
-                <p>Carregando informações do usuário...</p>
-            )}
-            <p onClick={logout}>Logout</p>
+            </div>
+            {modal && <Modal nome={usuario.name} email={usuario.email} />}
         </>
     );
 }
