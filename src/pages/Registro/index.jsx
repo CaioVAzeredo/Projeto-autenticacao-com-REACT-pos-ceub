@@ -34,8 +34,8 @@ function Registro() {
                 console.error("Erro ao criar usuário:", data);
                 alert("Erro ao criar usuário:" + data.message);
             }
-        } catch (erro) {
-            console.error("Erro de conexão com o servidor:", erro);
+        } catch (error) {
+            console.error("Erro de conexão com o servidor:", error);
             alert("Erro ao criar um novo usuário");
         }
     }

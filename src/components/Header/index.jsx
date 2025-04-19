@@ -2,6 +2,7 @@ import './Header.css'
 import iconeClaro from '../../assets/img/icone-claro.png';
 import iconeEscuro from '../../assets/img/icone-escuro.png';
 import { useEffect, useState } from 'react';
+import perfil from '../../assets/img/perfil-de-usuario-selecionado.png'
 
 
 function Header({ titulo }) {
@@ -11,6 +12,10 @@ function Header({ titulo }) {
 
     function mudarTema() {
         setTema(tema === "claro" ? "escuro" : "claro");
+    }
+
+    function paginaPerfil() {
+        window.location.href = "/"
     }
 
     useEffect(() => {
@@ -26,7 +31,7 @@ function Header({ titulo }) {
                     className='icon-tema'
                     onClick={mudarTema}
                 />
-                <img className='foto'></img></div>
+                <img className='foto' src={perfil} onClick={paginaPerfil}></img></div>
         </div>
     )
 }

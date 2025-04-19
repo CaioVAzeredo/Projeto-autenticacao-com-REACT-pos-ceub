@@ -21,8 +21,9 @@
     height: 30px;
     width: 30px;
     border-radius: 1000px;
-    background-color: black;
+    cursor: pointer;
 }
+
 
 .icon-tema {
     width: 30px;
