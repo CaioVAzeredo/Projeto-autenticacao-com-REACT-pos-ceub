@@ -13,7 +13,6 @@ function Login({ setToken }) {
     const verificarUsuario = async (credenciais) => {
         const { login, senha } = credenciais;
 
-        console.log(`Login: ${login}, senha: ${senha}`);
         try {
             const response = await fetch('http://localhost:3000/api/auth/login', {
                 method: "POST",
@@ -30,7 +29,7 @@ function Login({ setToken }) {
             if (response.ok) {
                 setToken(data.token);
                 localStorage.setItem("authToken", data.token);
-                navigate("/")
+                Navigate("/")
             } else {
                 alert("Login ou senhas incorretas!!")
             }

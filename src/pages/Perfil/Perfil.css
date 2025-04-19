@@ -14,6 +14,10 @@
     margin: 0 auto;
 }
 
+.info {
+    padding: 50px;
+}
+
 button {
     border: none;
     background-color: #f0f0f0;
@@ -21,8 +25,17 @@ button {
     border-radius: 10px;
     transition: 0.3s;
     cursor: pointer;
+    font-weight: bold;
 }
 
 button:hover {
     background-color: #b1b1b1;
+}
+
+.btnExcluir {
+    background-color: rgb(231, 9, 9);
+}
+
+.btnExcluir:hover {
+    background-color: rgb(179, 21, 21);
 }

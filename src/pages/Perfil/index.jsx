@@ -5,7 +5,7 @@ import Modal from '../../components/Modal';
 
 function Perfil() {
     const [usuario, setUsuario] = useState(null);
-    const [modal, setModal] = useState();
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
@@ -17,6 +17,7 @@ function Perfil() {
 
             try {
                 const response = await fetch("http://localhost:3000/api/users/profile", {
+                    method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -47,15 +48,16 @@ function Perfil() {
         setModal(!modal);
     }
 
+
     return (
         <>
             <Header titulo="Perfil" />
             <div className='profile'>
                 <h1>Olá, {usuario?.name}</h1>
                 {usuario ? (
-                    <div>
-                        <p>Nome: {usuario?.name}</p>
-                        <p>Email: {usuario.email}</p>
+                    <div className='info'>
+                        <p><strong>Nome:</strong> {usuario?.name}</p>
+                        <p><strong>E-mail:</strong> {usuario.email}</p>
                     </div>
                 ) : (
                     <p>Carregando informações do usuário...</p>
@@ -65,8 +67,12 @@ function Perfil() {
                     <button onClick={abrirModal}>Atualizar informações</button>
                 </div>
             </div>
-            {modal && <Modal nome={usuario.name} email={usuario.email} />}
+            {modal && <Modal
+                setModal={setModal}
+                modal={modal}
+                setUsuario={setUsuario} />}
         </>
+
     );
 }
 

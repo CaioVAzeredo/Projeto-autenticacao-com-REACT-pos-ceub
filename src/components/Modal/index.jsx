@@ -4,34 +4,61 @@ import Formulario from '../Formulario';
 import './Modal.css'
 import Button from '../Button';
 
-function Modal({ nomeAntigo, emailAntigo }) {
-    const [nome, setNome] = useState(nomeAntigo)
-    const [email, setEmail] = useState(emailAntigo)
-    
+function Modal({ setModal, modal, setUsuario }) {
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+
     const atualizarUsuario = async (credenciais) => {
-        console.log(credenciais)
-        alert("atualizar");
-    }
+        const { nome, email } = credenciais;
+        const token = localStorage.getItem("authToken");
+
+        try {
+            const response = await fetch('http://localhost:3000/api/users/profile', {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name: nome,
+                    email: email
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Usuário atualizado!!");
+                setUsuario(data);
+                setModal(!modal);
+            } else {
+                alert("Erro ao atualizar: " + data.message);
+            }
+        } catch (erro) {
+            console.error("Erro ao atualizar usuário:", erro);
+            alert("Erro na conexão.");
+        }
+    };
+
     return (
         <section className='modal'>
             <Formulario onSubmit={() => atualizarUsuario({ nome, email })} titulo="Atualizar usuário">
                 <Campo
                     placeholder="Nome"
                     type="text"
-                    valor={nomeAntigo}
+                    valor={nome}
                     onChange={(valor) => setNome(valor)}
                 />
                 <Campo
                     placeholder="E-mail"
                     type="email"
-                    valor={emailAntigo}
+                    valor={email}
                     onChange={(valor) => setEmail(valor)}
                 />
                 <Button info="Atualizar" />
             </Formulario>
-
         </section>
-    )
+    );
 }
 
 export default Modal;
