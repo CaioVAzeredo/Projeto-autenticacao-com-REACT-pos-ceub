@@ -22,7 +22,7 @@ const TarefaItem = ({
     };
     
     const handleMenuAction = (action) => {
-        onMenuAction(action, idTarefa);
+        onMenuAction(action, idTarefa, title);
         setShowMenu(false);
     };
     

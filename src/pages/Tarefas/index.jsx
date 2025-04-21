@@ -3,6 +3,7 @@ import Header from '../../components/Header';
 import TarefaItem from '../../components/TarefaItem/TarefaItem';
 import './Tarefas.css'
 import ModalFormTarefa from '../../components/ModalFormTarefa/ModalFormTarefa';
+import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
 
 function Tarefas() {
 
@@ -10,9 +11,43 @@ function Tarefas() {
     const [listaModificada, setListaModificada] = useState(false);
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const [tarefaEdit, setTarefaEdit] = useState(null);
+    const [tarefaDelete, setTarefaDelete] = useState(null);
+    const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
+
+    const handleConfirm = async () => {
+        const token = localStorage.getItem("authToken");
+
+        if (!token) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/tasks/${tarefaDelete.id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Erro ao excluir tarefa");
+            }
+            setIsModalConfirmOpen(false);
+            setTarefaDelete(null);
+            setListaModificada(true);
+        } catch (error) {
+            console.error("Erro ao criar tarefa:", error.message);
+        }
+    };
+
+    const handleCancel = () => {
+        setTarefaDelete(null);
+        setIsModalConfirmOpen(false);
+    };
 
     const handleCreate = async (tarefa) => {
-        console.log('Nova tarefa:', tarefa);
         const token = localStorage.getItem("authToken");
 
         const criarTarefa = async () => {
@@ -84,14 +119,15 @@ function Tarefas() {
         setListaModificada(false);
     }, [listaModificada]);
 
-    const onMenuAction = (action, idTarefa) => {
+    const onMenuAction = (action, idTarefa, title) => {
         switch (action) {
             case 'editar':
                 abrirModalEdicao(idTarefa);
                 break;
+            case 'excluir':
+                abrirModalExcluir(idTarefa, title);
+                break;
         }
-        setIsModalFormOpen(true);
-        console.log('Feito!!!');
     }
 
     const abrirModalEdicao = async (idTarefa) => {
@@ -121,9 +157,8 @@ function Tarefas() {
             console.error("Erro ao criar tarefa:", error.message);
         }
     }
-    
+
     const handleEdit = async (tarefa) => {
-        console.log(tarefa);
         const token = localStorage.getItem("authToken");
 
         if (!token) {
@@ -158,19 +193,20 @@ function Tarefas() {
         closeModalForm();
     };
 
-    const handleDelete = (id) => {
-        setTarefas(tarefas.filter(tarefa => tarefa.id !== id));
-    };
-
-    const handleStatusChange = (id, newStatus) => {
-        setTarefas(tarefas.map(tarefa => 
-            tarefa.id === id ? { ...tarefa, status: newStatus } : tarefa
-        ));
-    };
+    const abrirModalExcluir = (idTarefa, title) => {
+        setTarefaDelete({id:idTarefa, title:title});
+        setIsModalConfirmOpen(true);
+    }
 
     const closeModalForm = () => {
         setIsModalFormOpen(false);
         setTarefaEdit(null);
+    }
+
+    const getMessage = () => {
+        return (
+            <span>Tem certeza que deseja excluir a tarefa <strong>{tarefaDelete.title}</strong>?</span>
+        );
     }
 
     return (<>
@@ -207,6 +243,14 @@ function Tarefas() {
                 onCreate={handleCreate}
                 onEdit={handleEdit}
                 tarefaEdit={tarefaEdit}
+            />
+        )}
+
+        {isModalConfirmOpen && (
+            <ModalConfirmacao 
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+                getMessage={getMessage}
             />
         )}
 
