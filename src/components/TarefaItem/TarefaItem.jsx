@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './TarefaItem.css';
 
-const TaskCard = ({ 
+const TarefaItem = ({ 
+    idTarefa,
     title, 
     description, 
     status, 
     priority, 
-    createdAt 
+    createdAt,
+    onMenuAction
 }) => {
     const [showMenu, setShowMenu] = useState(false);
     
@@ -20,7 +22,7 @@ const TaskCard = ({
     };
     
     const handleMenuAction = (action) => {
-        alert(`Ação selecionada: ${action}`);
+        onMenuAction(action, idTarefa, title);
         setShowMenu(false);
     };
     
@@ -74,4 +76,4 @@ const TaskCard = ({
     );
 };
 
-export default TaskCard;
+export default TarefaItem;
