@@ -9,8 +9,9 @@ function Tarefas() {
     const [tarefas, setTarefas] = useState([]);
     const [listaModificada, setListaModificada] = useState(false);
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
+    const [tarefaEdit, setTarefaEdit] = useState(null);
 
-    const handleSubmit = async (tarefa) => {
+    const handleCreate = async (tarefa) => {
         console.log('Nova tarefa:', tarefa);
         const token = localStorage.getItem("authToken");
 
@@ -52,58 +53,113 @@ function Tarefas() {
     };
 
     useEffect(() => {
-            const token = localStorage.getItem("authToken");
-    
-            const buscarTarefas = async () => {
-                if (!token) {
-                    return;
-                }
-    
-                try {
-                    const response = await fetch("http://localhost:3000/api/tasks", {
-                        method: "GET",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        }
-                    });
-    
-                    const data = await response.json();
-    
-                    if (response.ok) {
-                        setTarefas(data);
-                    } else {
-                        console.error("Erro ao buscar tarefas" + data.message);
-                    }
-                } catch (error) {
-                    console.error("Erro " + error);
-                }
+        const token = localStorage.getItem("authToken");
+
+        const buscarTarefas = async () => {
+            if (!token) {
+                return;
             }
+
+            try {
+                const response = await fetch("http://localhost:3000/api/tasks", {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    setTarefas(data);
+                } else {
+                    console.error("Erro ao buscar tarefas" + data.message);
+                }
+            } catch (error) {
+                console.error("Erro " + error);
+            }
+        }
+
+        buscarTarefas();
+        setListaModificada(false);
+    }, [listaModificada]);
+
+    const onMenuAction = (action, idTarefa) => {
+        switch (action) {
+            case 'editar':
+                abrirModalEdicao(idTarefa);
+                break;
+        }
+        setIsModalFormOpen(true);
+        console.log('Feito!!!');
+    }
+
+    const abrirModalEdicao = async (idTarefa) => {
+        const token = localStorage.getItem("authToken");
+
+        if (!token) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/tasks/${idTarefa}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Erro ao editar tarefa");
+            }
+
+            setTarefaEdit(data);
+            setIsModalFormOpen(true);
+        } catch (error) {
+            console.error("Erro ao criar tarefa:", error.message);
+        }
+    }
     
-            buscarTarefas();
-            setListaModificada(false);
-        }, [listaModificada]);
-    
-    const handleCreate = () => {
-        if (novaTarefa.title.trim() === '') return;
-        
-        const newTarefa = {
-            id: tarefas.length + 1,
-            title: novaTarefa.title,
-            description: novaTarefa.description
-        };
-        
-        setTarefas([...tarefas, newTarefa]);
-        setNovaTarefa({ title: '', description: '' });
+    const handleEdit = async (tarefa) => {
+        console.log(tarefa);
+        const token = localStorage.getItem("authToken");
+
+        if (!token) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/tasks/${tarefa.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: tarefa.title,
+                    description: tarefa.description,
+                    priority: tarefa.priority,
+                    status: tarefa.status
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Erro ao editar tarefa");
+            }
+        } catch (error) {
+            console.error("Erro " + error);
+        }
+
+        setListaModificada(true);
+        closeModalForm();
     };
-    
+
     const handleDelete = (id) => {
         setTarefas(tarefas.filter(tarefa => tarefa.id !== id));
-    };
-    
-    const handleEdit = (id, updatedTask) => {
-        setTarefas(tarefas.map(tarefa => 
-        tarefa.id === id ? { ...tarefa, ...updatedTask } : tarefa
-        ));
     };
 
     const handleStatusChange = (id, newStatus) => {
@@ -112,6 +168,10 @@ function Tarefas() {
         ));
     };
 
+    const closeModalForm = () => {
+        setIsModalFormOpen(false);
+        setTarefaEdit(null);
+    }
 
     return (<>
         <Header titulo="Tarefas" />
@@ -130,19 +190,23 @@ function Tarefas() {
 
                     return (<TarefaItem
                             key={tarefa.id}
+                            idTarefa={tarefa.id}
                             title={tarefa.title}
                             description={tarefa.description}
                             status={tarefa.status}
                             priority={tarefa.priority.toLowerCase()}
-                            createdAt={`Criada em ${dataCriacao}`} />)
+                            createdAt={`Criada em ${dataCriacao}`} 
+                            onMenuAction={onMenuAction} />)
                 })}
             </ul>
         </div>
 
         {isModalFormOpen && (
             <ModalFormTarefa 
-            onClose={() => setIsModalFormOpen(false)}
-            onSubmit={handleSubmit}
+                onClose={() => closeModalForm()}
+                onCreate={handleCreate}
+                onEdit={handleEdit}
+                tarefaEdit={tarefaEdit}
             />
         )}
 
