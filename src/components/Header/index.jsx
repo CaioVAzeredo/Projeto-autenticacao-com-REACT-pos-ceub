@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import perfil from '../../assets/img/perfil-de-usuario-selecionado.png'
 
 
-function Header({ titulo }) {
+function Header({ titulo, setPagina, setTitulo, setFiltro, setIcone }) {
     const [tema, setTema] = useState(() => {
         return localStorage.getItem("tema") || "claro";
     });
@@ -15,7 +15,10 @@ function Header({ titulo }) {
     }
 
     function paginaPerfil() {
-        window.location.href = "/"
+        setPagina("perfil");
+        setTitulo("Perfil");
+        setFiltro("perfil");
+        setIcone("perfil");
     }
 
     useEffect(() => {

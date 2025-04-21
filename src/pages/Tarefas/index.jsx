@@ -114,7 +114,6 @@ function Tarefas() {
 
 
     return (<>
-        <Header titulo="Tarefas" />
         <div className='header-lista'>
             <h1>Tarefas</h1>
             <button onClick={() => setIsModalFormOpen(true)}>Criar Tarefa</button>

@@ -5,11 +5,9 @@ import Perfil from '../Perfil';
 import DashBoard from '../Dashboard';
 
 import dashboard from '../../assets/img/casa.png';
-import dashboardSelecionado from '../../assets/img/casa-selecionado.png';
 import tarefas from '../../assets/img/lista.png';
-import tarefasSelecionado from '../../assets/img/lista-selecionado.png';
 import perfil from '../../assets/img/perfil-de-usuario.png';
-import perfilSelecionado from '../../assets/img/perfil-de-usuario-selecionado.png';
+import Header from '../../components/Header';
 
 function PaginaBase() {
     const [filtro, setFiltro] = useState("dashboard");
@@ -60,6 +58,12 @@ function PaginaBase() {
             </section>
             <div className='minhas-tarefas'>
                 <main>
+                    <Header 
+                    titulo={titulo} 
+                    setPagina={setPagina} 
+                    setTitulo={setTitulo} 
+                    setFiltro={setFiltro} 
+                    setIcone={setIcone} />
                     {paginas[pagina]}
                 </main>
             </div>

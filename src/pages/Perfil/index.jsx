@@ -51,7 +51,6 @@ function Perfil() {
 
     return (
         <>
-            <Header titulo="Perfil" />
             <div className='profile'>
                 <h1>Olá, {usuario?.name}</h1>
                 {usuario ? (
