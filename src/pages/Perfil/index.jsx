@@ -71,6 +71,7 @@ function Perfil() {
                 modal={modal}
                 setUsuario={setUsuario}
                 estadoModal={estadoModal}
+                botaoFecharModal={true}
             />}
         </>
 

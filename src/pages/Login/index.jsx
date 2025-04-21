@@ -2,6 +2,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Formulario from "../../components/Formulario";
 import Campo from "../../components/Campo";
 import Button from "../../components/Button";
+import './Login.css'
 
 import { useState } from "react";
 
@@ -44,7 +45,7 @@ function Login({ setToken }) {
     }
 
     return (
-        <>
+        <div className="login">
             <Formulario onSubmit={() => verificarUsuario({ login, senha })} titulo="LOGIN" botaoVoltar={false}>
 
                 <p>Entre com seu email e senha para acessar sua conta</p>
@@ -70,7 +71,7 @@ function Login({ setToken }) {
                 <p>Nao tem conta ainda? <a onClick={registrar}>Registre-se</a></p>
 
             </Formulario>
-        </>
+        </div>
     )
 }
 

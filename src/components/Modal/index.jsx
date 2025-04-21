@@ -43,7 +43,12 @@ function Modal({ setUsuario, estadoModal }) {
 
     return (
         <section className='modal'>
-            <Formulario onSubmit={() => atualizarUsuario({ nome, email })} titulo="Atualizar usuário" estadoModal={estadoModal}>
+            <Formulario
+                onSubmit={() => atualizarUsuario({ nome, email })}
+                titulo="Atualizar usuário"
+                estadoModal={estadoModal}
+                botaoFecharModal={true}
+            >
 
                 <Campo
                     placeholder="Nome"
