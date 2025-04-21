@@ -8,7 +8,6 @@
     max-width: 400px;
     text-align: center;
     margin: 0 auto;
-    margin-top: 200px;
 }
 
 
@@ -45,4 +44,13 @@
 
 .botaoVoltar:hover {
     cursor: pointer;
+}
+
+.divBotao {
+    display: flex;
+    justify-content: space-between;
+}
+
+.divBotao button {
+    width: 35px;
 }

@@ -211,7 +211,7 @@ function Tarefas() {
 
     return (<>
         <div className='header-lista'>
-            <h1>Tarefas</h1>
+            <h1>Minhas Tarefas</h1>
             <button onClick={() => setIsModalFormOpen(true)}>Criar Tarefa</button>
         </div>
         <div className="tarefa-list-container">

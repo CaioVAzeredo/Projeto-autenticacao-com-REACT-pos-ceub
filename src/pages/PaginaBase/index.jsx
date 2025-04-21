@@ -58,12 +58,12 @@ function PaginaBase() {
             </section>
             <div className='minhas-tarefas'>
                 <main>
-                    <Header 
-                    titulo={titulo} 
-                    setPagina={setPagina} 
-                    setTitulo={setTitulo} 
-                    setFiltro={setFiltro} 
-                    setIcone={setIcone} />
+                    <Header
+                        titulo={titulo}
+                        setPagina={setPagina}
+                        setTitulo={setTitulo}
+                        setFiltro={setFiltro}
+                        setIcone={setIcone} />
                     {paginas[pagina]}
                 </main>
             </div>

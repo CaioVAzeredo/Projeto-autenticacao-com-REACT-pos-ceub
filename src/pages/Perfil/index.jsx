@@ -44,7 +44,7 @@ function Perfil() {
         alert("Você saiu");
     }
 
-    function abrirModal() {
+    function estadoModal() {
         setModal(!modal);
     }
 
@@ -63,13 +63,15 @@ function Perfil() {
                 )}
                 <div className="botoes">
                     <button onClick={logout}>Logout</button>
-                    <button onClick={abrirModal}>Atualizar informações</button>
+                    <button onClick={estadoModal}>Atualizar informações</button>
                 </div>
             </div>
             {modal && <Modal
                 setModal={setModal}
                 modal={modal}
-                setUsuario={setUsuario} />}
+                setUsuario={setUsuario}
+                estadoModal={estadoModal}
+            />}
         </>
 
     );

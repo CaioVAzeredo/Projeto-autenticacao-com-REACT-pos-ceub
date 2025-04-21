@@ -4,7 +4,7 @@ import Formulario from '../Formulario';
 import './Modal.css'
 import Button from '../Button';
 
-function Modal({ setModal, modal, setUsuario }) {
+function Modal({ setUsuario, estadoModal }) {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
 
@@ -30,7 +30,7 @@ function Modal({ setModal, modal, setUsuario }) {
             if (response.ok) {
                 alert("Usuário atualizado!!");
                 setUsuario(data);
-                setModal(!modal);
+                estadoModal();
             } else {
                 alert("Erro ao atualizar: " + data.message);
             }
@@ -40,9 +40,11 @@ function Modal({ setModal, modal, setUsuario }) {
         }
     };
 
+
     return (
         <section className='modal'>
-            <Formulario onSubmit={() => atualizarUsuario({ nome, email })} titulo="Atualizar usuário">
+            <Formulario onSubmit={() => atualizarUsuario({ nome, email })} titulo="Atualizar usuário" estadoModal={estadoModal}>
+
                 <Campo
                     placeholder="Nome"
                     type="text"
