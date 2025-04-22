@@ -54,6 +54,7 @@ function Login({ setToken }) {
                         placeholder="E-mail"
                         type="text"
                         valor={login}
+                        required={true}
                         onChange={(valor) => setLogin(valor)}
                     />
                 </div>
@@ -63,6 +64,7 @@ function Login({ setToken }) {
                         placeholder="Senha"
                         type="password"
                         valor={senha}
+                        required={true}
                         onChange={(valor) => setSenha(valor)}
                     />
                 </div>

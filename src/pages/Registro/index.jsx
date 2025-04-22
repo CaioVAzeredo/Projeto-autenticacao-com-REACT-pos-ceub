@@ -32,10 +32,10 @@ function Registro() {
                 Navigate("/");
             } else {
                 console.error("Erro ao criar usuário:", data);
-                alert("Erro ao criar usuário:" + data.message);
+                alert("Erro ao criar usuário: " + data.error);
             }
         } catch (error) {
-            console.error("Erro de conexão com o servidor:", error);
+            console.log("Erro de conexão com o servidor:", error);
             alert("Erro ao criar um novo usuário");
         }
     }
@@ -49,6 +49,7 @@ function Registro() {
                         placeholder="E-mail"
                         type="text"
                         valor={login}
+                        required={true}
                         onChange={(valor) => setLogin(valor)}
                     />
                 </div>
@@ -57,6 +58,7 @@ function Registro() {
                         placeholder="Nome"
                         type="text"
                         valor={nome}
+                        required={true}
                         onChange={(valor) => setNome(valor)}
                     />
                 </div>
@@ -65,6 +67,7 @@ function Registro() {
                         placeholder="Senha"
                         type="password"
                         valor={senha}
+                        required={true}
                         onChange={(valor) => setSenha(valor)}
                     />
                 </div>
