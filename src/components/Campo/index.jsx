@@ -4,7 +4,7 @@ function Campo({ placeholder, valor, onChange, type }) {
     return (<div className='campo'>
         <label htmlFor="">{placeholder}</label>
         <input
-            valor={valor}
+            value={valor}
             type={type}
             onChange={(e) => onChange(e.target.value)}
         />

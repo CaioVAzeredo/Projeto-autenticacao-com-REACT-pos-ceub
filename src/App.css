@@ -2,3 +2,26 @@ body {
     font-family: 'Courier New', Courier, monospace;
     margin: 0;
 }
+
+/* App.css */
+.app {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Tema Claro */
+.app.claro {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Tema Escuro */
+.app.escuro {
+    background-color: #1b1b1b;
+    color: #9b9b9b;
+
+}
+
+
+/* Exemplo de personalização adicional */

@@ -72,7 +72,10 @@ function Perfil() {
                 setUsuario={setUsuario}
                 estadoModal={estadoModal}
                 botaoFecharModal={true}
+                Nome={usuario.name}
+                Email={usuario.email}
             />}
+
         </>
 
     );

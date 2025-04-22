@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Campo from '../Campo';
 import Formulario from '../Formulario';
 import './Modal.css'
 import Button from '../Button';
 
-function Modal({ setUsuario, estadoModal }) {
+function Modal({ setUsuario, estadoModal, Nome, Email }) {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
+
+
+    useEffect(() => {
+        setNome(Nome);
+        setEmail(Email);
+    }, [Nome, Email]);
 
     const atualizarUsuario = async (credenciais) => {
         const { nome, email } = credenciais;

@@ -1,30 +1,31 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from 'react'
-import './App.css'
-import Login from './pages/Login'
+import { useEffect, useState } from 'react';
+import './App.css';
+import Login from './pages/Login';
 import Registro from "./pages/Registro";
 import Perfil from "./pages/Perfil";
 import PaginaBase from "./pages/PaginaBase";
+import { ThemeProvider } from "./components/ThemeContext";
 
 function App() {
-  const [token, setToken] = useState()
+  const [token, setToken] = useState();
 
   useEffect(() => {
-    const tokenSalvo = localStorage.getItem("authToken")
+    const tokenSalvo = localStorage.getItem("authToken");
     if (tokenSalvo) {
-      setToken(tokenSalvo)
+      setToken(tokenSalvo);
     }
-  })
+  }, []);
 
   return (
-    <>
+    <ThemeProvider>
       <Router>
         <Routes>
           <Route path="/pag-base" element={<PaginaBase />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/perfil" element={<Perfil />} />
-
-          <Route path="/"
+          <Route
+            path="/"
             element={
               !token ? (
                 <Login setToken={setToken} />
@@ -32,13 +33,11 @@ function App() {
                 <Navigate to="/pag-base" replace />
               )
             }
-
           />
         </Routes>
       </Router>
-
-    </>
-  )
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
