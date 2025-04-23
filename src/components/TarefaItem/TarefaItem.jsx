@@ -17,7 +17,6 @@ const TarefaItem = ({
     };
     
     const handleStatusChange = () => {
-        // Lógica para mudar o status (seria implementada conforme necessidade)
         alert(`Status mudado de ${status} para o próximo estado`);
     };
     
@@ -29,13 +28,13 @@ const TarefaItem = ({
     const getStatusIcon = () => {
         switch(status) {
             case 'PENDENTE':
-            return <span className="status-icon pending">!</span>;
+                return <span className="status-icon pending" title="Pendente">!</span>;
             case 'EM_ANDAMENTO':
-            return <span className="status-icon in-progress">↻</span>;
+                return <span className="status-icon in-progress" title="Em Andamento">↻</span>;
             case 'CONCLUIDO':
-            return <span className="status-icon completed">✓</span>;
+                return <span className="status-icon completed" title="Concluída">✓</span>;
             default:
-            return <span className="status-icon pending">!</span>;
+                return <span className="status-icon pending" title="Pendente">!</span>;
         }
     };
     
@@ -43,23 +42,27 @@ const TarefaItem = ({
         return `priority-badge ${priority}`;
     };
 
+    const getPriorityShadowClass = () => {
+        return `priority-shadow-${priority}`;
+    };
+
     return (
-        <div className="task-card">
+        <div className={`task-card ${getPriorityShadowClass()}`}>
             <div className="card-header">
-            <div className="title-container">
-                {getStatusIcon()}
-                <h3 className="task-title">{title}</h3>
-            </div>
-            <div className="menu-container">
-                <button className="menu-button" onClick={toggleMenu}>⋮</button>
-                {showMenu && (
-                <div className="dropdown-menu">
-                    <button onClick={() => handleMenuAction('visualizar')}>Visualizar</button>
-                    <button onClick={() => handleMenuAction('editar')}>Editar</button>
-                    <button onClick={() => handleMenuAction('excluir')}>Excluir</button>
+                <div className="title-container">
+                    {getStatusIcon()}
+                    <h3 className="task-title">{title}</h3>
                 </div>
-                )}
-            </div>
+                <div className="menu-container">
+                    <button className="menu-button" onClick={toggleMenu}>⋮</button>
+                    {showMenu && (
+                        <div className="dropdown-menu">
+                            <button onClick={() => handleMenuAction('visualizar')}>Visualizar</button>
+                            <button onClick={() => handleMenuAction('editar')}>Editar</button>
+                            <button onClick={() => handleMenuAction('excluir')}>Excluir</button>
+                        </div>
+                    )}
+                </div>
             </div>
             
             <p className="task-description">{description}</p>
@@ -70,7 +73,7 @@ const TarefaItem = ({
             </div>
             
             <button className="status-button" onClick={handleStatusChange}>
-            Mudar Status
+                Mudar Status
             </button>
         </div>
     );

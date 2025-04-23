@@ -1,1 +1,1 @@
-Aqui vai a documentação
+# Inicializar o projeto no terminal: npm run dev
