@@ -8,16 +8,13 @@ const TarefaItem = ({
     status, 
     priority, 
     createdAt,
-    onMenuAction
+    onMenuAction,
+    handleStatusChange
 }) => {
     const [showMenu, setShowMenu] = useState(false);
     
     const toggleMenu = () => {
         setShowMenu(!showMenu);
-    };
-    
-    const handleStatusChange = () => {
-        alert(`Status mudado de ${status} para o próximo estado`);
     };
     
     const handleMenuAction = (action) => {
@@ -46,6 +43,34 @@ const TarefaItem = ({
         return `priority-shadow-${priority}`;
     };
 
+    const getButtonChangStatus = (statusAtual) => {
+        switch (statusAtual) {
+            case 'CONCLUIDO':
+                return (
+                    <button 
+                        className="status-button"
+                        onClick={() => handleStatusChange(idTarefa, 'PENDENTE')}>
+                        Reabrir tarefa
+                    </button>)
+            case 'PENDENTE':
+                return (
+                    <button 
+                        className="status-button"
+                        onClick={() => handleStatusChange(idTarefa, 'EM_ANDAMENTO')}>
+                        Iniciar tarefa
+                    </button>)
+            case 'EM_ANDAMENTO':
+                return (
+                    <button 
+                        className="status-button"
+                        onClick={() => handleStatusChange(idTarefa, 'CONCLUIDO')}>
+                        Concluir tarefa
+                    </button>)
+            default:
+                throw new Error("Status da tarefa inválido");
+        }
+    };
+
     return (
         <div className={`task-card ${getPriorityShadowClass()}`}>
             <div className="card-header">
@@ -72,9 +97,7 @@ const TarefaItem = ({
                 <span className="created-date">{createdAt}</span>
             </div>
             
-            <button className="status-button" onClick={handleStatusChange}>
-                Mudar Status
-            </button>
+            {getButtonChangStatus(status)}
         </div>
     );
 };

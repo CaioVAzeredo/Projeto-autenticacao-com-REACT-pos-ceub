@@ -94,6 +94,16 @@ function Tarefas() {
     }
   };
 
+  const handleStatusChange = async (idTarefa, status) => {
+    const tarefa = {id: idTarefa, status: status}
+    try {
+        await atualizarTarefa(tarefa);
+        setListaModificada(true);
+    } catch (error) {
+        console.error("Erro ao mudar status:", error.message);
+    }
+  };
+
   const abrirModalExcluir = (idTarefa, title) => {
     setTarefaDelete({ id: idTarefa, title: title });
     setIsModalConfirmOpen(true);
@@ -229,6 +239,7 @@ function Tarefas() {
                   priority={tarefa.priority.toLowerCase()}
                   createdAt={`Criada em ${dataCriacao}`}
                   onMenuAction={onMenuAction}
+                  handleStatusChange={handleStatusChange}
                 />
               );
             })
