@@ -53,6 +53,13 @@ function Tarefas() {
     const carregarTarefas = async () => {
       try {
         const tarefas = await buscarTarefas();
+        // Log para depurar valores de status retornados
+        console.log('Tarefas carregadas:', tarefas.map(t => ({ id: t.id, status: t.status })));
+        // Log específico para tarefas com status relacionado a "Concluída"
+        console.log(
+          'Tarefas com status "Concluída" (antes do mapeamento):',
+          tarefas.filter(t => t.status && t.status.toLowerCase().includes('conclu') || t.status.toLowerCase().includes('complete') || t.status.toLowerCase().includes('done') || t.status.toLowerCase().includes('finished'))
+        );
         setTarefas(tarefas);
         setListaModificada(false);
       } catch (error) {
@@ -95,12 +102,12 @@ function Tarefas() {
   };
 
   const handleStatusChange = async (idTarefa, status) => {
-    const tarefa = {id: idTarefa, status: status}
+    const tarefa = { id: idTarefa, status: status };
     try {
-        await atualizarTarefa(tarefa);
-        setListaModificada(true);
+      await atualizarTarefa(tarefa);
+      setListaModificada(true);
     } catch (error) {
-        console.error("Erro ao mudar status:", error.message);
+      console.error("Erro ao mudar status:", error.message);
     }
   };
 
@@ -122,39 +129,59 @@ function Tarefas() {
     );
   };
 
+  // Função para mudar de aba e (opcionalmente) resetar dropdowns
+  const mudarAba = (aba) => {
+    setAbaSelecionada(aba);
+    // Descomente as linhas abaixo se quiser resetar os dropdowns ao mudar de aba
+    // setFiltroStatus('Todos os status');
+    // setFiltroPrioridade('Todas as prioridades');
+  };
+
   // Lógica de filtragem
-  /* const tarefasFiltradas = tarefas.filter((tarefa) => {
-    // Filtrar por aba
-    if (abaSelecionada === 'Pendentes' && tarefa.status !== 'Pendente') return false;
-    if (abaSelecionada === 'Concluídas' && tarefa.status !== 'Concluída') return false;
-    if (abaSelecionada === 'Em Andamento' && tarefa.status !== 'Em Andamento') return false;
-
-    // Filtrar por status (dropdown)
-    if (filtroStatus !== 'Todos os status' && tarefa.status !== filtroStatus) return false;
-
-    // Filtrar por prioridade (dropdown)
-    if (filtroPrioridade !== 'Todas as prioridades' && tarefa.priority !== filtroPrioridade) return false;
-
-    return true;
-  }); */
-
   const tarefasFiltradas = tarefas.filter((tarefa) => {
+    // Normalizar valores para evitar problemas com maiúsculas/minúsculas
+    const statusNormalizado = tarefa.status ? tarefa.status.trim().toLowerCase() : '';
+    const prioridadeNormalizada = tarefa.priority ? tarefa.priority.trim().toLowerCase() : '';
+
+    // Mapear valores normalizados para os esperados pelas abas e dropdowns
+    const statusMapeado = {
+      pendente: 'Pendente',
+      'em andamento': 'Em Andamento',
+      em_andamento: 'Em Andamento',
+      concluída: 'Concluída',
+      concluida: 'Concluída',
+      concluido: 'Concluída', // Adicionado para cobrir "CONCLUIDO" do backend
+      completed: 'Concluída',
+      complete: 'Concluída',
+      done: 'Concluída',
+      finished: 'Concluída',
+      in_progress: 'Em Andamento',
+    }[statusNormalizado] || tarefa.status;
+
+    const prioridadeMapeada = {
+      alta: 'Alta',
+      média: 'Média',
+      media: 'Média',
+      baixa: 'Baixa',
+      high: 'Alta',
+      medium: 'Média',
+      low: 'Baixa',
+    }[prioridadeNormalizada] || tarefa.priority;
+
+    // Log para depurar o mapeamento de status
+    console.log(`Tarefa ID ${tarefa.id}: status original=${tarefa.status}, normalizado=${statusNormalizado}, mapeado=${statusMapeado}`);
+
     // Filtrar por aba
-    if (abaSelecionada !== 'Todas') {
-      if (abaSelecionada === 'Pendentes' && tarefa.status !== 'Pendente') return false;
-      if (abaSelecionada === 'Concluídas' && tarefa.status !== 'Concluída') return false;
-      if (abaSelecionada === 'Em Andamento' && tarefa.status !== 'Em Andamento') return false;
-    }
-  
+    if (abaSelecionada !== 'Todas' && statusMapeado !== abaSelecionada) return false;
+
     // Filtrar por status (dropdown)
-    if (filtroStatus !== 'Todos os status' && tarefa.status !== filtroStatus) return false;
-  
+    if (filtroStatus !== 'Todos os status' && statusMapeado !== filtroStatus) return false;
+
     // Filtrar por prioridade (dropdown)
-    if (filtroPrioridade !== 'Todas as prioridades' && tarefa.priority !== filtroPrioridade) return false;
-  
+    if (filtroPrioridade !== 'Todas as prioridades' && prioridadeMapeada !== filtroPrioridade) return false;
+
     return true;
   });
-  
 
   return (
     <>
@@ -193,25 +220,25 @@ function Tarefas() {
       <div className="abas-container">
         <button
           className={`aba ${abaSelecionada === 'Todas' ? 'ativa' : ''}`}
-          onClick={() => setAbaSelecionada('Todas')}
+          onClick={() => mudarAba('Todas')}
         >
           Todas
         </button>
         <button
           className={`aba ${abaSelecionada === 'Pendentes' ? 'ativa' : ''}`}
-          onClick={() => setAbaSelecionada('Pendentes')}
+          onClick={() => mudarAba('Pendentes')}
         >
           Pendentes
         </button>
         <button
           className={`aba ${abaSelecionada === 'Em Andamento' ? 'ativa' : ''}`}
-          onClick={() => setAbaSelecionada('Em Andamento')}
+          onClick={() => mudarAba('Em Andamento')}
         >
           Em Andamento
         </button>
         <button
           className={`aba ${abaSelecionada === 'Concluídas' ? 'ativa' : ''}`}
-          onClick={() => setAbaSelecionada('Concluídas')}
+          onClick={() => mudarAba('Concluídas')}
         >
           Concluídas
         </button>
