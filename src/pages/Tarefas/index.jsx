@@ -3,6 +3,13 @@ import TarefaItem from '../../components/TarefaItem/TarefaItem';
 import './Tarefas.css';
 import ModalFormTarefa from '../../components/ModalFormTarefa/ModalFormTarefa';
 import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
+import {
+  buscarTarefas,
+  buscarTarefaPorId,
+  criarTarefa,
+  atualizarTarefa,
+  excluirTarefa,
+} from "./../../service/tarefaService";
 
 function Tarefas() {
   const [tarefas, setTarefas] = useState([]);
@@ -12,31 +19,13 @@ function Tarefas() {
   const [tarefaDelete, setTarefaDelete] = useState(null);
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
 
-  
-  const [abaSelecionada, setAbaSelecionada] = useState('Todas');
-  const [filtroStatus, setFiltroStatus] = useState('Todos os status');
-  const [filtroPrioridade, setFiltroPrioridade] = useState('Todas as prioridades');
+  const [abaSelecionada, setAbaSelecionada] = useState("Todas");
+  const [filtroStatus, setFiltroStatus] = useState("Todos os status");
+  const [filtroPrioridade, setFiltroPrioridade] = useState("Todas as prioridades");
 
   const handleConfirm = async () => {
-    const token = localStorage.getItem("authToken");
-
-    if (!token) {
-      return;
-    }
-
     try {
-      const response = await fetch(`http://localhost:3000/api/tasks/${tarefaDelete.id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Erro ao excluir tarefa");
-      }
+      await excluirTarefa(tarefaDelete.id);
       setIsModalConfirmOpen(false);
       setTarefaDelete(null);
       setListaModificada(true);
@@ -51,149 +40,58 @@ function Tarefas() {
   };
 
   const handleCreate = async (tarefa) => {
-    const token = localStorage.getItem("authToken");
-
-    const criarTarefa = async () => {
-      if (!token) {
-        console.error("Token não disponível");
-        return;
-      }
-
-      try {
-        const response = await fetch("http://localhost:3000/api/tasks", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: tarefa.title,
-            description: tarefa.description,
-            priority: tarefa.priority,
-            status: tarefa.status,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Erro ao criar tarefa");
-        }
-
-        setListaModificada(true);
-      } catch (error) {
-        console.error("Erro ao criar tarefa:", error.message);
-      }
-    };
-
-    await criarTarefa();
-    setIsModalFormOpen(false);
+    try {
+      await criarTarefa(tarefa);
+      setListaModificada(true);
+      setIsModalFormOpen(false);
+    } catch (error) {
+      console.error("Erro ao criar tarefa:", error.message);
+    }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-
-    const buscarTarefas = async () => {
-      if (!token) {
-        return;
-      }
-
+    const carregarTarefas = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/tasks", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setTarefas(data);
-        } else {
-          console.error("Erro ao buscar tarefas: " + data.message);
-        }
+        const tarefas = await buscarTarefas();
+        setTarefas(tarefas);
+        setListaModificada(false);
       } catch (error) {
-        console.error("Erro: " + error);
+        console.error("Erro ao carregar tarefas:", error.message);
       }
     };
 
-    buscarTarefas();
-    setListaModificada(false);
+    carregarTarefas();
   }, [listaModificada]);
 
   const onMenuAction = (action, idTarefa, title) => {
     switch (action) {
-      case 'editar':
+      case "editar":
         abrirModalEdicao(idTarefa);
         break;
-      case 'excluir':
+      case "excluir":
         abrirModalExcluir(idTarefa, title);
         break;
     }
   };
 
   const abrirModalEdicao = async (idTarefa) => {
-    const token = localStorage.getItem("authToken");
-
-    if (!token) {
-      return;
-    }
-
     try {
-      const response = await fetch(`http://localhost:3000/api/tasks/${idTarefa}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Erro ao editar tarefa");
-      }
-
-      setTarefaEdit(data);
+      const tarefa = await buscarTarefaPorId(idTarefa);
+      setTarefaEdit(tarefa);
       setIsModalFormOpen(true);
     } catch (error) {
-      console.error("Erro ao editar tarefa:", error.message);
+      console.error("Erro ao buscar tarefa para edição:", error.message);
     }
   };
 
   const handleEdit = async (tarefa) => {
-    const token = localStorage.getItem("authToken");
-
-    if (!token) {
-      return;
-    }
-
     try {
-      const response = await fetch(`http://localhost:3000/api/tasks/${tarefa.id}`, {
-        method: "PATCH",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: tarefa.title,
-          description: tarefa.description,
-          priority: tarefa.priority,
-          status: tarefa.status,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Erro ao editar tarefa");
-      }
+      await atualizarTarefa(tarefa);
+      setListaModificada(true);
+      closeModalForm();
     } catch (error) {
-      console.error("Erro: " + error);
+      console.error("Erro ao editar tarefa:", error.message);
     }
-
-    setListaModificada(true);
-    closeModalForm();
   };
 
   const abrirModalExcluir = (idTarefa, title) => {
