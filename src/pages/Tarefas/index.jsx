@@ -1,18 +1,26 @@
 import { useEffect, useState } from 'react';
-import Header from '../../components/Header';
 import TarefaItem from '../../components/TarefaItem/TarefaItem';
 import './Tarefas.css'
 import ModalFormTarefa from '../../components/ModalFormTarefa/ModalFormTarefa';
 import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
+import ModalVisualizar from '../../components/ModalVisualizar';
 
 function Tarefas() {
 
     const [tarefas, setTarefas] = useState([]);
     const [listaModificada, setListaModificada] = useState(false);
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
+    const [isModal, setIsModal] = useState(false);
     const [tarefaEdit, setTarefaEdit] = useState(null);
+    const [tarefaInfo, setTarefaInfo] = useState(null);
     const [tarefaDelete, setTarefaDelete] = useState(null);
     const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
+
+    console.log(tarefaInfo);
+
+    function estadoModal() {
+        setIsModal(!isModal);
+    }
 
     const handleConfirm = async () => {
         const token = localStorage.getItem("authToken");
@@ -55,7 +63,7 @@ function Tarefas() {
                 console.error("Token não disponível");
                 return;
             }
-        
+
             try {
                 const response = await fetch("http://localhost:3000/api/tasks", {
                     method: "POST",
@@ -70,13 +78,13 @@ function Tarefas() {
                         status: tarefa.status
                     })
                 });
-        
+
                 const data = await response.json();
-        
+
                 if (!response.ok) {
                     throw new Error(data.message || "Erro ao criar tarefa");
                 }
-        
+
                 setListaModificada(true);
             } catch (error) {
                 console.error("Erro ao criar tarefa:", error.message);
@@ -126,7 +134,38 @@ function Tarefas() {
                 break;
             case 'excluir':
                 abrirModalExcluir(idTarefa, title);
+            case 'visualizar':
+                abrirModalVisualizar(idTarefa);
                 break;
+        }
+    }
+
+
+    const abrirModalVisualizar = async (idTarefa) => {
+        const token = localStorage.getItem("authToken");
+
+        if (!token) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/tasks/${idTarefa}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Erro ao editar tarefa");
+            }
+
+            setTarefaInfo(data);
+            setIsModal(!isModal);
+        } catch (error) {
+            console.error("Erro ao criar tarefa:", error.message);
         }
     }
 
@@ -194,7 +233,7 @@ function Tarefas() {
     };
 
     const abrirModalExcluir = (idTarefa, title) => {
-        setTarefaDelete({id:idTarefa, title:title});
+        setTarefaDelete({ id: idTarefa, title: title });
         setIsModalConfirmOpen(true);
     }
 
@@ -214,6 +253,9 @@ function Tarefas() {
             <h1>Minhas Tarefas</h1>
             <button onClick={() => setIsModalFormOpen(true)}>Criar Tarefa</button>
         </div>
+        <div className='filtros'>
+
+        </div>
         <div className="tarefa-list-container">
             <ul className="tarefa-items-list">
                 {tarefas.map(tarefa => {
@@ -221,23 +263,35 @@ function Tarefas() {
                     let dataCriacao = new Date(tarefa.createdAt).toLocaleDateString('pt-BR', {
                         year: 'numeric',
                         month: 'long',
-                        day: 'numeric'});
+                        day: 'numeric'
+                    });
 
                     return (<TarefaItem
-                            key={tarefa.id}
-                            idTarefa={tarefa.id}
-                            title={tarefa.title}
-                            description={tarefa.description}
-                            status={tarefa.status}
-                            priority={tarefa.priority.toLowerCase()}
-                            createdAt={`Criada em ${dataCriacao}`} 
-                            onMenuAction={onMenuAction} />)
+                        key={tarefa.id}
+                        idTarefa={tarefa.id}
+                        title={tarefa.title}
+                        description={tarefa.description}
+                        status={tarefa.status}
+                        priority={tarefa.priority.toLowerCase()}
+                        createdAt={`Criada em ${dataCriacao}`}
+                        onMenuAction={onMenuAction} />)
                 })}
             </ul>
         </div>
 
+        {isModal && (
+            <ModalVisualizar
+                onClose={() => estadoModal()}
+                titulo={tarefaInfo.title}
+                descricao={tarefaInfo.description}
+                prioridade={tarefaInfo.priority}
+            />
+
+
+        )}
+
         {isModalFormOpen && (
-            <ModalFormTarefa 
+            <ModalFormTarefa
                 onClose={() => closeModalForm()}
                 onCreate={handleCreate}
                 onEdit={handleEdit}
@@ -246,7 +300,7 @@ function Tarefas() {
         )}
 
         {isModalConfirmOpen && (
-            <ModalConfirmacao 
+            <ModalConfirmacao
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
                 getMessage={getMessage}
