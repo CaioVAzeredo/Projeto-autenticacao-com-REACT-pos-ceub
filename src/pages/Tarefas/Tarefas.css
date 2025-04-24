@@ -104,11 +104,15 @@
     color: #007bff;
   }
   
-  .aba.ativa {
+  .aba.ativaAntiga {
     color: #007bff;
     border-bottom: 2px solid #007bff;
+    
   }
-  
+  .aba.ativa {
+    border-bottom: 2px solid blue;
+    color: blue;
+  }
  
   .tarefa-list-container {
     margin: 0 auto;

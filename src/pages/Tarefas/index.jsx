@@ -19,9 +19,16 @@ function Tarefas() {
   const [tarefaDelete, setTarefaDelete] = useState(null);
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
 
-  const [abaSelecionada, setAbaSelecionada] = useState("Todas");
-  const [filtroStatus, setFiltroStatus] = useState("Todos os status");
+  const [filtroAba, setFiltroAba] = useState({ filtroStatus: "Todos os status", abaSelecionada: "Todas" });
   const [filtroPrioridade, setFiltroPrioridade] = useState("Todas as prioridades");
+
+  useEffect(() => {
+    console.log("Estado inicial - filtroAba:", filtroAba);
+  }, []);
+
+  useEffect(() => {
+    console.log(`Estado atual - filtroStatus: ${filtroAba.filtroStatus}, abaSelecionada: ${filtroAba.abaSelecionada}`);
+  }, [filtroAba]);
 
   const handleConfirm = async () => {
     try {
@@ -53,13 +60,10 @@ function Tarefas() {
     const carregarTarefas = async () => {
       try {
         const tarefas = await buscarTarefas();
-        // Log para depurar valores de status retornados
-        console.log('Tarefas carregadas:', tarefas.map(t => ({ id: t.id, status: t.status })));
-        // Log específico para tarefas com status relacionado a "Concluída"
-        console.log(
-          'Tarefas com status "Concluída" (antes do mapeamento):',
-          tarefas.filter(t => t.status && t.status.toLowerCase().includes('conclu') || t.status.toLowerCase().includes('complete') || t.status.toLowerCase().includes('done') || t.status.toLowerCase().includes('finished'))
-        );
+        console.log("Tarefas recebidas do backend:", tarefas);
+        tarefas.forEach((tarefa, index) => {
+          console.log(`TAREFA ${index + 1} - Status: ${tarefa.status}, Prioridade: ${tarefa.priority}`);
+        });
         setTarefas(tarefas);
         setListaModificada(false);
       } catch (error) {
@@ -102,12 +106,14 @@ function Tarefas() {
   };
 
   const handleStatusChange = async (idTarefa, status) => {
+    console.log(`handleStatusChange chamado - idTarefa: ${idTarefa}, Novo Status: ${status}`);
     const tarefa = { id: idTarefa, status: status };
     try {
       await atualizarTarefa(tarefa);
       setListaModificada(true);
     } catch (error) {
       console.error("Erro ao mudar status:", error.message);
+      setListaModificada(true);
     }
   };
 
@@ -129,28 +135,35 @@ function Tarefas() {
     );
   };
 
-  // Função para mudar de aba e (opcionalmente) resetar dropdowns
   const mudarAba = (aba) => {
-    setAbaSelecionada(aba);
-    // Descomente as linhas abaixo se quiser resetar os dropdowns ao mudar de aba
-    // setFiltroStatus('Todos os status');
-    // setFiltroPrioridade('Todas as prioridades');
+    console.log(`Mudando aba para ${aba}`);
+    const novoFiltroStatus = aba === 'Todas' ? 'Todos os status' :
+                           aba === 'Pendentes' ? 'Pendente' :
+                           aba === 'Em Andamento' ? 'Em Andamento' :
+                           aba === 'Concluídas' ? 'Concluída' : 'Todos os status';
+    setFiltroAba({ filtroStatus: novoFiltroStatus, abaSelecionada: aba });
   };
 
-  // Lógica de filtragem
+  const mudarFiltroStatus = (status) => {
+    console.log(`Mudando filtroStatus para ${status}`);
+    const novaAba = status === 'Todos os status' ? 'Todas' :
+                   status === 'Pendente' ? 'Pendentes' :
+                   status === 'Em Andamento' ? 'Em Andamento' :
+                   status === 'Concluída' ? 'Concluídas' : 'Todas';
+    setFiltroAba({ filtroStatus: status, abaSelecionada: novaAba });
+  };
+
   const tarefasFiltradas = tarefas.filter((tarefa) => {
-    // Normalizar valores para evitar problemas com maiúsculas/minúsculas
     const statusNormalizado = tarefa.status ? tarefa.status.trim().toLowerCase() : '';
     const prioridadeNormalizada = tarefa.priority ? tarefa.priority.trim().toLowerCase() : '';
 
-    // Mapear valores normalizados para os esperados pelas abas e dropdowns
     const statusMapeado = {
       pendente: 'Pendente',
       'em andamento': 'Em Andamento',
       em_andamento: 'Em Andamento',
       concluída: 'Concluída',
       concluida: 'Concluída',
-      concluido: 'Concluída', // Adicionado para cobrir "CONCLUIDO" do backend
+      concluido: 'Concluída',
       completed: 'Concluída',
       complete: 'Concluída',
       done: 'Concluída',
@@ -168,18 +181,27 @@ function Tarefas() {
       low: 'Baixa',
     }[prioridadeNormalizada] || tarefa.priority;
 
-    // Log para depurar o mapeamento de status
-    console.log(`Tarefa ID ${tarefa.id}: status original=${tarefa.status}, normalizado=${statusNormalizado}, mapeado=${statusMapeado}`);
+    console.log(`Filtrando tarefa: ${tarefa.title}, Status Mapeado: ${statusMapeado}, Filtro Status: ${filtroAba.filtroStatus}, Filtro Prioridade: ${filtroPrioridade}`);
 
-    // Filtrar por aba
-    if (abaSelecionada !== 'Todas' && statusMapeado !== abaSelecionada) return false;
+    // Filtro por status
+    if (filtroAba.filtroStatus !== 'Todos os status') {
+      const statusParaComparar = filtroAba.filtroStatus === 'Concluídas' ? 'Concluída' : 
+                               filtroAba.filtroStatus === 'Pendentes' ? 'Pendente' : 
+                               filtroAba.filtroStatus;
+      
+      if (statusMapeado !== statusParaComparar) {
+        console.log(`Tarefa ${tarefa.title} filtrada por status`);
+        return false;
+      }
+    }
 
-    // Filtrar por status (dropdown)
-    if (filtroStatus !== 'Todos os status' && statusMapeado !== filtroStatus) return false;
+    // Filtro por prioridade
+    if (filtroPrioridade !== 'Todas as prioridades' && prioridadeMapeada !== filtroPrioridade) {
+      console.log(`Tarefa ${tarefa.title} filtrada por prioridade`);
+      return false;
+    }
 
-    // Filtrar por prioridade (dropdown)
-    if (filtroPrioridade !== 'Todas as prioridades' && prioridadeMapeada !== filtroPrioridade) return false;
-
+    console.log(`Tarefa ${tarefa.title} incluída na lista filtrada`);
     return true;
   });
 
@@ -190,13 +212,15 @@ function Tarefas() {
         <button onClick={() => setIsModalFormOpen(true)}>Nova Tarefa</button>
       </div>
 
-      {/* Dropdowns */}
       <div className="filtros-container">
         <div className="dropdown-container">
           <select
             className="dropdown"
-            value={filtroStatus}
-            onChange={(e) => setFiltroStatus(e.target.value)}
+            value={filtroAba.filtroStatus}
+            onChange={(e) => {
+              console.log(`Dropdown de status alterado - Novo valor: ${e.target.value}`);
+              mudarFiltroStatus(e.target.value);
+            }}
           >
             <option value="Todos os status">Todos os status</option>
             <option value="Pendente">Pendentes</option>
@@ -206,7 +230,10 @@ function Tarefas() {
           <select
             className="dropdown"
             value={filtroPrioridade}
-            onChange={(e) => setFiltroPrioridade(e.target.value)}
+            onChange={(e) => {
+              console.log(`Dropdown de prioridade alterado - Novo valor: ${e.target.value}`);
+              setFiltroPrioridade(e.target.value);
+            }}
           >
             <option value="Todas as prioridades">Todas as prioridades</option>
             <option value="Alta">Alta</option>
@@ -216,28 +243,31 @@ function Tarefas() {
         </div>
       </div>
 
-      {/* Abas */}
       <div className="abas-container">
+        {console.log(`Renderizando aba Todas - Ativa: ${filtroAba.abaSelecionada === 'Todas'}`)}
         <button
-          className={`aba ${abaSelecionada === 'Todas' ? 'ativa' : ''}`}
+          className={`aba ${filtroAba.abaSelecionada === 'Todas' ? 'ativa' : ''}`}
           onClick={() => mudarAba('Todas')}
         >
           Todas
         </button>
+        {console.log(`Renderizando aba Pendentes - Ativa: ${filtroAba.abaSelecionada === 'Pendentes'}`)}
         <button
-          className={`aba ${abaSelecionada === 'Pendentes' ? 'ativa' : ''}`}
+          className={`aba ${filtroAba.abaSelecionada === 'Pendentes' ? 'ativa' : ''}`}
           onClick={() => mudarAba('Pendentes')}
         >
           Pendentes
         </button>
+        {console.log(`Renderizando aba Em Andamento - Ativa: ${filtroAba.abaSelecionada === 'Em Andamento'}`)}
         <button
-          className={`aba ${abaSelecionada === 'Em Andamento' ? 'ativa' : ''}`}
+          className={`aba ${filtroAba.abaSelecionada === 'Em Andamento' ? 'ativa' : ''}`}
           onClick={() => mudarAba('Em Andamento')}
         >
           Em Andamento
         </button>
+        {console.log(`Renderizando aba Concluídas - Ativa: ${filtroAba.abaSelecionada === 'Concluídas'}`)}
         <button
-          className={`aba ${abaSelecionada === 'Concluídas' ? 'ativa' : ''}`}
+          className={`aba ${filtroAba.abaSelecionada === 'Concluídas' ? 'ativa' : ''}`}
           onClick={() => mudarAba('Concluídas')}
         >
           Concluídas
