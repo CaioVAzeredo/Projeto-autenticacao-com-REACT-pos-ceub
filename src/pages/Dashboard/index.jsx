@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./Dashboard.css"
 import Button from "../../components/Button";
-import { getUser } from '../../service/usuarioService';
 
 function DashBoard({ setPagina }) {
     const [usuario, setUsuario] = useState(null);
