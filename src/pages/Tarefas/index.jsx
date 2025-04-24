@@ -3,6 +3,7 @@ import TarefaItem from '../../components/TarefaItem/TarefaItem';
 import './Tarefas.css';
 import ModalFormTarefa from '../../components/ModalFormTarefa/ModalFormTarefa';
 import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
+import ModalVisualizar from '../../components/ModalVisualizar';
 import {
   buscarTarefas,
   buscarTarefaPorId,
@@ -18,9 +19,15 @@ function Tarefas() {
   const [tarefaEdit, setTarefaEdit] = useState(null);
   const [tarefaDelete, setTarefaDelete] = useState(null);
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [tarefaInfo, setTarefaInfo] = useState(null);
 
   const [filtroAba, setFiltroAba] = useState({ filtroStatus: "Todos os status", abaSelecionada: "Todas" });
   const [filtroPrioridade, setFiltroPrioridade] = useState("Todas as prioridades");
+
+  function estadoModal() {
+    setIsModal(!isModal);
+}
 
   useEffect(() => {
     console.log("Estado inicial - filtroAba:", filtroAba);
@@ -76,14 +83,44 @@ function Tarefas() {
 
   const onMenuAction = (action, idTarefa, title) => {
     switch (action) {
-      case "editar":
-        abrirModalEdicao(idTarefa);
-        break;
-      case "excluir":
-        abrirModalExcluir(idTarefa, title);
-        break;
+        case 'editar':
+            abrirModalEdicao(idTarefa);
+            break;
+        case 'excluir':
+            abrirModalExcluir(idTarefa, title);
+        case 'visualizar':
+            abrirModalVisualizar(idTarefa);
+            break;
     }
-  };
+};
+
+const abrirModalVisualizar = async (idTarefa) => {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+      return;
+  }
+
+  try {
+      const response = await fetch(`http://localhost:3000/api/tasks/${idTarefa}`, {
+          method: "GET",
+          headers: {
+              Authorization: `Bearer ${token}`,
+          }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+          throw new Error(data.message || "Erro ao editar tarefa");
+      }
+
+      setTarefaInfo(data);
+      setIsModal(!isModal);
+  } catch (error) {
+      console.error("Erro ao criar tarefa:", error.message);
+  }
+}
 
   const abrirModalEdicao = async (idTarefa) => {
     try {
@@ -303,6 +340,16 @@ function Tarefas() {
           )}
         </ul>
       </div>
+      {isModal && (
+                <ModalVisualizar
+                    onClose={() => estadoModal()}
+                    titulo={tarefaInfo.title}
+                    descricao={tarefaInfo.description}
+                    prioridade={tarefaInfo.priority}
+                />
+
+
+            )}
 
       {isModalFormOpen && (
         <ModalFormTarefa
