@@ -8,7 +8,6 @@ function Modal({ setUsuario, estadoModal, Nome, Email }) {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
 
-
     useEffect(() => {
         setNome(Nome);
         setEmail(Email);
@@ -55,7 +54,6 @@ function Modal({ setUsuario, estadoModal, Nome, Email }) {
                 estadoModal={estadoModal}
                 botaoFecharModal={true}
             >
-
                 <Campo
                     placeholder="Nome"
                     type="text"

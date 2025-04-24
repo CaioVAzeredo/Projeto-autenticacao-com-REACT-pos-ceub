@@ -1,34 +1,141 @@
-.header-lista {
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+ 
+  .header-lista {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 20px;
-}
-
-.header-lista h1 {}
-
-.tarefa-list-container {
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-
-.tarefa-list-container h1 {
-    text-align: center;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .header-lista h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
     color: #333;
-}
+  }
+  
+  .header-lista button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .header-lista button:hover {
+    background-color: #0056b3;
+  }
+  
+ 
+  .filtros-container {
+    padding: 20px 40px;
+    background-color: white;
+  }
+  
+  .dropdown-container {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .dropdown {
+    padding: 8px 30px 8px 12px;
+    border: 1px solid #d1d3e2;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" d="M6 8.5L0 2.5h12z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: border-color 0.3s;
+  }
+  
+  .dropdown:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .dropdown:hover {
+    border-color: #999;
+  }
+  
 
-.tarefa-items-list {
+  .abas-container {
+    display: flex;
+    gap: 30px;
+    padding: 0 40px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: white;
+  }
+  
+  .aba {
+    padding: 10px 0;
+    background: none;
+    color: #666;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.3s, border-bottom-color 0.3s;
+  }
+  
+  .aba:hover {
+    color: #007bff;
+  }
+  
+  .aba.ativa {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+  }
+  
+ 
+  .tarefa-list-container {
+    margin: 0 auto;
+    padding: 20px 40px;
+    background-color: #f8f9fa;
+  }
+  
+  .tarefa-items-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 16px;
-}
-button{
-    height: 50px;
-    margin-top: 25px;
-    margin-right: 20px;
-}
+    gap: 20px;
+  }
+  
+ 
+  .tarefa-list-container p {
+    width: 100%;
+    text-align: center;
+    color: #666;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  
+  button:not(.aba) {
+    margin: 0; 
+  }

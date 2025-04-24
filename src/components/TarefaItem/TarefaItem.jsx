@@ -8,20 +8,15 @@ const TarefaItem = ({
     status,
     priority,
     createdAt,
-    onMenuAction
+    onMenuAction,
+    handleStatusChange
 }) => {
     const [showMenu, setShowMenu] = useState(false);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
     };
-
-    const handleStatusChange = () => {
-        // Lógica para mudar o status (seria implementada conforme necessidade)
-
-        alert(`Status mudado de ${status} para o próximo estado`);
-    };
-
+    
     const handleMenuAction = (action) => {
         onMenuAction(action, idTarefa, title);
         setShowMenu(false);
@@ -30,13 +25,13 @@ const TarefaItem = ({
     const getStatusIcon = () => {
         switch (status) {
             case 'PENDENTE':
-                return <span className="status-icon pending">!</span>;
+                return <span className="status-icon pending" title="Pendente">!</span>;
             case 'EM_ANDAMENTO':
-                return <span className="status-icon in-progress">↻</span>;
+                return <span className="status-icon in-progress" title="Em Andamento">↻</span>;
             case 'CONCLUIDO':
-                return <span className="status-icon completed">✓</span>;
+                return <span className="status-icon completed" title="Concluída">✓</span>;
             default:
-                return <span className="status-icon pending">!</span>;
+                return <span className="status-icon pending" title="Pendente">!</span>;
         }
     };
 
@@ -44,8 +39,40 @@ const TarefaItem = ({
         return `priority-badge ${priority}`;
     };
 
+    const getPriorityShadowClass = () => {
+        return `priority-shadow-${priority}`;
+    };
+
+    const getButtonChangStatus = (statusAtual) => {
+        switch (statusAtual) {
+            case 'CONCLUIDO':
+                return (
+                    <button 
+                        className="status-button"
+                        onClick={() => handleStatusChange(idTarefa, 'PENDENTE')}>
+                        Reabrir tarefa
+                    </button>)
+            case 'PENDENTE':
+                return (
+                    <button 
+                        className="status-button"
+                        onClick={() => handleStatusChange(idTarefa, 'EM_ANDAMENTO')}>
+                        Iniciar tarefa
+                    </button>)
+            case 'EM_ANDAMENTO':
+                return (
+                    <button 
+                        className="status-button"
+                        onClick={() => handleStatusChange(idTarefa, 'CONCLUIDO')}>
+                        Concluir tarefa
+                    </button>)
+            default:
+                throw new Error("Status da tarefa inválido");
+        }
+    };
+
     return (
-        <div className="task-card">
+        <div className={`task-card ${getPriorityShadowClass()}`}>
             <div className="card-header">
                 <div className="title-container">
                     {getStatusIcon()}
@@ -62,17 +89,15 @@ const TarefaItem = ({
                     )}
                 </div>
             </div>
-
+            
             <p className="task-description">{description}</p>
 
             <div className="card-footer">
                 <span className={getPriorityClass()}>{priority}</span>
                 <span className="created-date">{createdAt}</span>
             </div>
-
-            <button className="status-button" onClick={handleStatusChange}>
-                {status === "PENDENTE" || status === "EM_ANDAMENTO" ? "Marcar como concluido" : "Reabrir tarefa"}
-            </button>
+            
+            {getButtonChangStatus(status)}
         </div>
     );
 };
