@@ -1,0 +1,19 @@
+.dashboard {
+    padding: 20px;
+}
+
+.dashboard h2,
+.dashboard p {
+    text-align: center;
+}
+
+
+.divBtn {
+    display: flex;
+    width: 500px;
+    justify-content: space-between;
+}
+
+.divBtn button {
+    margin: 10px;
+}

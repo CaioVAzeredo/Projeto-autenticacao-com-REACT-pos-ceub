@@ -22,7 +22,7 @@ function PaginaBase() {
     const { tema } = useTema();
 
     const paginas = {
-        dashboard: <DashBoard />,
+        dashboard: <DashBoard setPagina={setPagina} />,
         tarefas: <Tarefas />,
         perfil: <Perfil />
     }

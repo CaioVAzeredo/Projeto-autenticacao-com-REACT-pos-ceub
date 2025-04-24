@@ -3,6 +3,7 @@ import Formulario from '../../components/Formulario';
 import Campo from '../../components/Campo';
 import Button from '../../components/Button';
 import { Navigate } from 'react-router-dom';
+import './Registro.css'
 
 function Registro() {
     const [login, setLogin] = useState('');
@@ -41,7 +42,7 @@ function Registro() {
     }
 
     return (
-        <div>
+        <div className='registro'>
             <Formulario onSubmit={() => criarUsuario({ nome, login, senha })} titulo="Página de Registro" botaoVoltar={true} url={"/"}>
                 <p>Entre com seu email e senha para acessar sua conta</p>
                 <div>

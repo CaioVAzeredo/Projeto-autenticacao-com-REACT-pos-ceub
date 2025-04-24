@@ -10,7 +10,10 @@
     display: flex;
     justify-content: space-between;
     width: 120px;
-    padding-top: 20px;
+}
+
+.header div img {
+    margin-bottom: 20px;
 }
 
 .header div i {

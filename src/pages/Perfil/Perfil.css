@@ -4,6 +4,7 @@
 }
 
 .profile h1 {
+    margin-top: 50px;
     text-align: center;
 }
 
@@ -17,7 +18,9 @@
 .info {
     padding: 50px;
 }
-
+.info p{
+    padding: 10px;
+}
 button {
     border: none;
     background-color: #f0f0f0;
