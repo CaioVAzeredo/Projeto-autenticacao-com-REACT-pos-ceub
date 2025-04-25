@@ -25,9 +25,11 @@ function Tarefas() {
   const [filtroAba, setFiltroAba] = useState({ filtroStatus: "Todos os status", abaSelecionada: "Todas" });
   const [filtroPrioridade, setFiltroPrioridade] = useState("Todas as prioridades");
 
+
+
   function estadoModal() {
     setIsModal(!isModal);
-}
+  }
 
   useEffect(() => {
     console.log("Estado inicial - filtroAba:", filtroAba);
@@ -83,44 +85,44 @@ function Tarefas() {
 
   const onMenuAction = (action, idTarefa, title) => {
     switch (action) {
-        case 'editar':
-            abrirModalEdicao(idTarefa);
-            break;
-        case 'excluir':
-            abrirModalExcluir(idTarefa, title);
-        case 'visualizar':
-            abrirModalVisualizar(idTarefa);
-            break;
+      case 'editar':
+        abrirModalEdicao(idTarefa);
+        break;
+      case 'excluir':
+        abrirModalExcluir(idTarefa, title);
+      case 'visualizar':
+        abrirModalVisualizar(idTarefa);
+        break;
     }
-};
+  };
 
-const abrirModalVisualizar = async (idTarefa) => {
-  const token = localStorage.getItem("authToken");
+  const abrirModalVisualizar = async (idTarefa) => {
+    const token = localStorage.getItem("authToken");
 
-  if (!token) {
+    if (!token) {
       return;
-  }
+    }
 
-  try {
+    try {
       const response = await fetch(`http://localhost:3000/api/tasks/${idTarefa}`, {
-          method: "GET",
-          headers: {
-              Authorization: `Bearer ${token}`,
-          }
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-          throw new Error(data.message || "Erro ao editar tarefa");
+        throw new Error(data.message || "Erro ao editar tarefa");
       }
 
       setTarefaInfo(data);
       setIsModal(!isModal);
-  } catch (error) {
+    } catch (error) {
       console.error("Erro ao criar tarefa:", error.message);
+    }
   }
-}
 
   const abrirModalEdicao = async (idTarefa) => {
     try {
@@ -175,18 +177,18 @@ const abrirModalVisualizar = async (idTarefa) => {
   const mudarAba = (aba) => {
     console.log(`Mudando aba para ${aba}`);
     const novoFiltroStatus = aba === 'Todas' ? 'Todos os status' :
-                           aba === 'Pendentes' ? 'Pendente' :
-                           aba === 'Em Andamento' ? 'Em Andamento' :
-                           aba === 'Concluídas' ? 'Concluída' : 'Todos os status';
+      aba === 'Pendentes' ? 'Pendente' :
+        aba === 'Em Andamento' ? 'Em Andamento' :
+          aba === 'Concluídas' ? 'Concluída' : 'Todos os status';
     setFiltroAba({ filtroStatus: novoFiltroStatus, abaSelecionada: aba });
   };
 
   const mudarFiltroStatus = (status) => {
     console.log(`Mudando filtroStatus para ${status}`);
     const novaAba = status === 'Todos os status' ? 'Todas' :
-                   status === 'Pendente' ? 'Pendentes' :
-                   status === 'Em Andamento' ? 'Em Andamento' :
-                   status === 'Concluída' ? 'Concluídas' : 'Todas';
+      status === 'Pendente' ? 'Pendentes' :
+        status === 'Em Andamento' ? 'Em Andamento' :
+          status === 'Concluída' ? 'Concluídas' : 'Todas';
     setFiltroAba({ filtroStatus: status, abaSelecionada: novaAba });
   };
 
@@ -222,10 +224,10 @@ const abrirModalVisualizar = async (idTarefa) => {
 
     // Filtro por status
     if (filtroAba.filtroStatus !== 'Todos os status') {
-      const statusParaComparar = filtroAba.filtroStatus === 'Concluídas' ? 'Concluída' : 
-                               filtroAba.filtroStatus === 'Pendentes' ? 'Pendente' : 
-                               filtroAba.filtroStatus;
-      
+      const statusParaComparar = filtroAba.filtroStatus === 'Concluídas' ? 'Concluída' :
+        filtroAba.filtroStatus === 'Pendentes' ? 'Pendente' :
+          filtroAba.filtroStatus;
+
       if (statusMapeado !== statusParaComparar) {
         console.log(`Tarefa ${tarefa.title} filtrada por status`);
         return false;
@@ -341,15 +343,15 @@ const abrirModalVisualizar = async (idTarefa) => {
         </ul>
       </div>
       {isModal && (
-                <ModalVisualizar
-                    onClose={() => estadoModal()}
-                    titulo={tarefaInfo.title}
-                    descricao={tarefaInfo.description}
-                    prioridade={tarefaInfo.priority}
-                />
+        <ModalVisualizar
+          onClose={() => estadoModal()}
+          titulo={tarefaInfo.title}
+          descricao={tarefaInfo.description}
+          prioridade={tarefaInfo.priority}
+        />
 
 
-            )}
+      )}
 
       {isModalFormOpen && (
         <ModalFormTarefa
