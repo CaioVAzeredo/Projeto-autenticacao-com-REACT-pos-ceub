@@ -56,6 +56,14 @@
     justify-content: space-between;
 }
 
-.divBotao button {
+.btnX {
     width: 35px;
+    background-color: #b6b4b4;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btnX:hover {
+    background-color: #adabab;
 }

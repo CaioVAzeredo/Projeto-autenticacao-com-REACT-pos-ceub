@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import Formulario from '../../components/Formulario';
 import Campo from '../../components/Campo';
 import Button from '../../components/Button';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import './Registro.css'
 
 function Registro() {
     const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
     const [nome, setNome] = useState('');
+    const navigate = useNavigate()
 
     const criarUsuario = async (credenciais) => {
         const { nome, login, senha } = credenciais;
@@ -30,14 +31,14 @@ function Registro() {
 
             if (response.ok) {
                 alert("Usuário criado com sucesso!!");
-                Navigate("/");
+                navigate("/");
             } else {
                 console.error("Erro ao criar usuário:", data);
                 alert("Erro ao criar usuário: " + data.error);
             }
         } catch (error) {
             console.log("Erro de conexão com o servidor:", error);
-            alert("Erro ao criar um novo usuário");
+            a
         }
     }
 

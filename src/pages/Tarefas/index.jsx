@@ -90,6 +90,7 @@ function Tarefas() {
         break;
       case 'excluir':
         abrirModalExcluir(idTarefa, title);
+        break;
       case 'visualizar':
         abrirModalVisualizar(idTarefa);
         break;

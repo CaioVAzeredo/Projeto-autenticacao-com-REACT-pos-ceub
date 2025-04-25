@@ -1,6 +1,10 @@
 .profile {
     margin: 0 auto;
     width: 500px;
+    box-shadow: 0px 4px 8px #d1d1d1;
+    padding: 50px;
+    margin-top: 200px;
+    border-radius: 5px;
 }
 
 .profile h1 {
@@ -18,21 +22,25 @@
 .info {
     padding: 50px;
 }
-.info p{
+
+.info p {
     padding: 10px;
 }
+
 button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
     border: none;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 10px;
-    transition: 0.3s;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #b1b1b1;
+    background-color: #0056b3;
 }
 
 .btnExcluir {
