@@ -16,8 +16,6 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .header-lista h1 {
@@ -45,7 +43,6 @@ body {
 
 .filtros-container {
   padding: 20px 40px;
-  background-color: white;
 }
 
 .dropdown-container {}
@@ -82,8 +79,9 @@ body {
 .status-button {
   color: #2c2c2c;
 }
-.menu-button:hover{
-background-color: #B1B1B1;
+
+.menu-button:hover {
+  background-color: #B1B1B1;
 }
 
 /* .dropdown-container {
@@ -121,7 +119,8 @@ background-color: #B1B1B1;
   width: 1200px;
   border-radius: 5px;
   padding: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 5px;  
+
 }
 
 .aba {
@@ -188,7 +187,8 @@ background-color: #B1B1B1;
 .tarefa-list-container {
   margin: 0 auto;
   padding: 20px 40px;
-  background-color: #f8f9fa;
+  /* 
+  background-color: #f8f9fa; */
 }
 
 .tarefa-items-list {
@@ -213,4 +213,45 @@ background-color: #B1B1B1;
 
 button:not(.aba) {
   margin: 0;
+}
+
+/* Estilo para Tema Escuro */
+.app.escuro .header,
+.app.escuro .header-lista,
+.app.escuro .filtros-container {
+  background-color: #1b1b1b;
+  color: #9B9B9B;
+}
+
+.app.escuro .header-lista h1 {
+  color: #9B9B9B;
+}
+
+.app.escuro .abas-container {
+  background-color: #2b2b2b;
+}
+
+.app.escuro .abas-container .aba.ativa {
+  color: #f8f9fa;
+  background-color: #B1B1B1;
+}
+
+.app.escuro .filtros-container .dropdown-container .dropdown {
+  background-color: #1b1b1b;
+  color: #9B9B9B;
+}
+
+.app.escuro .tarefa-list-container .tarefa-items-list .task-card {
+  background-color: #1b1b1b;
+  color: #9B9B9B;
+}
+
+.app.escuro .tarefa-list-container .tarefa-items-list .task-card .task-description,
+.app.escuro .tarefa-list-container .tarefa-items-list .task-card .card-footer .created-date {
+  color: #9B9B9B;
+}
+
+.app.escuro .tarefa-list-container .tarefa-items-list .status-button {
+  background-color: black;
+  color: #9B9B9B;
 }

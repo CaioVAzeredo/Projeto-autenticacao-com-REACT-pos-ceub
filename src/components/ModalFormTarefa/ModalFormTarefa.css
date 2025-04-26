@@ -110,3 +110,28 @@
     color: #aaa;
     opacity: 1;
 }
+
+.app.escuro .tarefa-modal {
+    background-color: #23272b;
+    color: #9B9B9B;
+}
+
+.app.escuro .tarefa-modal .modal-header h2 {
+    color: #9B9B9B;
+}
+
+.app.escuro .form-group label,
+.app.escuro .form-group input {
+    color: #9B9B9B;
+}
+
+.app.escuro .form-group input,
+.app.escuro .form-row .form-group select,
+.app.escuro .form-group textarea {
+    background-color: #e4e3e3;
+    color: black;
+}
+
+.app.escuro .submit-btn {
+    background-color: #007bff;
+}

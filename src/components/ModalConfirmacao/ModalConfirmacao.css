@@ -67,3 +67,11 @@
 .cancel-btn:hover {
     background-color: #e0e0e0;
 }
+.app.escuro .confirmation-modal{
+background-color: #23272b;
+}
+
+.app.escuro .confirmation-modal .modal-content .confirmation-message{
+    color: #9B9B9B;
+    
+}

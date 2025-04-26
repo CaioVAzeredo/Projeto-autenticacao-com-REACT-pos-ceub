@@ -3,25 +3,25 @@ body {
     margin: 0;
 }
 
-/* App.css */
 .app {
     transition: background-color 0.3s ease, color 0.3s ease;
     min-height: 100vh;
     padding: 20px;
 }
+/* 
+button {
+    background-color: #0011ff !important;
+} */
 
 /* Tema Claro */
 .app.claro {
-    background-color: #ffffff;
+    background-color: #f8f9fa;
     color: #000000;
 }
 
+
 /* Tema Escuro */
-.app.escuro {
+.app.escuro{
     background-color: #1b1b1b;
-    color: #9b9b9b;
-
+    color: #9B9B9B;
 }
-
-
-/* Exemplo de personalização adicional */

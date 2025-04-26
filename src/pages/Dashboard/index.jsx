@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import ModalFormTarefa from '../../components/ModalFormTarefa/ModalFormTarefa';
 
 
-function DashBoard({ setPagina }) {
+function DashBoard({ setPagina, setIcone, setTitulo, setFiltro }) {
     const [usuario, setUsuario] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [modalAberto, setModalAberto] = useState(false);
@@ -97,7 +97,10 @@ function DashBoard({ setPagina }) {
     };
 
     const irParaPerfil = () => {
+        setTitulo("Perfil");
+        setFiltro("perfil");
         setPagina("perfil");
+        setIcone("perfil");
     };
 
     return (

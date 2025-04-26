@@ -50,3 +50,7 @@ button:hover {
 .btnExcluir:hover {
     background-color: rgb(179, 21, 21);
 }
+
+.app.escuro .profile{
+    box-shadow: 0px 4px 8px #000000;
+}
